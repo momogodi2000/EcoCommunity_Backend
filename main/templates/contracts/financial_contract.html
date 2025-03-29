@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+     <meta charset="UTF-8">
+        <style>
+                body {{ font-family: Arial, sans-serif; margin: 40px; }}
+                .header {{ text-align: center; margin-bottom: 30px; }}
+                .section {{ margin: 20px 0; }}
+                .signatures {{ margin-top: 50px; }}
+                .signature-line {{ border-top: 1px solid black; width: 200px; margin: 20px 0; }}
+        </style>
+ </head>
+<div class="header">
+                <h1>{contract_data['contract_type']}</h1>
+                <p>Date: {contract_data['date']}</p>
+            </div>
+
+            <div class="section">
+                <h2>Parties</h2>
+                <p><strong>Entrepreneur:</strong> {contract_data['entrepreneur_name']}</p>
+                <p>Email: {contract_data['entrepreneur_email']}</p>
+                <p><strong>Investor:</strong> {contract_data['investor_name']}</p>
+                <p>Email: {contract_data['investor_email']}</p>
+            </div>
+
+            <div class="section">
+                <h2>Project Details</h2>
+                <p><strong>Project Name:</strong> {contract_data['project_name']}</p>
+            </div>
+
+            <div class="section">
+                <h2>Agreement Details</h2>
+                {'<p><strong>Investment Amount:</strong> ' + contract_data['investment_amount'] + '</p>' if contract_type == 'financial' else ''}
+                {'<p><strong>Investment Type:</strong> ' + contract_data['investment_type'] + '</p>' if contract_type == 'financial' else ''}
+                {'<p><strong>Timeline:</strong> ' + contract_data['timeline'] + '</p>' if contract_type == 'financial' else ''}
+                {'<p><strong>Expertise Area:</strong> ' + contract_data['expertise'] + '</p>' if contract_type == 'technical' else ''}
+                {'<p><strong>Support Duration:</strong> ' + contract_data['support_duration'] + '</p>' if contract_type == 'technical' else ''}
+                {'<p><strong>Support Type:</strong> ' + contract_data['support_type'] + '</p>' if contract_type == 'technical' else ''}
+            </div>
+
+            <div class="section">
+                <h2>Terms and Conditions</h2>
+                <p>{contract_data['terms']}</p>
+            </div>
+
+            <div class="signatures">
+                <div style="float: left; width: 45%;">
+                    <div class="signature-line"></div>
+                    <p>Entrepreneur Signature<br>{contract_data['entrepreneur_name']}</p>
+                </div>
+                <div style="float: right; width: 45%;">
+                    <div class="signature-line"></div>
+                    <p>Investor Signature<br>{contract_data['investor_name']}</p>
+                </div>
+            </div>
+ </body>
+</html>
