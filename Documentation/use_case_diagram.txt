@@ -1,0 +1,115 @@
+graph TD
+    %% Actors
+    ADMIN((Admin))
+    ENTREPRENEUR((Entrepreneur))
+    INVESTOR((Investor))
+    ORGANIZATION((Organization))
+    
+    %% Use Cases - User Management
+    UC1[Register Account]
+    UC2[Login to System]
+    UC3[Manage Profile]
+    UC4[Upload Documents]
+    
+    %% Use Cases - Project Management
+    UC5[Create Project]
+    UC6[View Projects]
+    UC7[Approve/Reject Projects]
+    UC8[Update Project Status]
+    
+    %% Use Cases - Help Request Management
+    UC9[Create Help Request]
+    UC10[Browse Help Requests]
+    UC11[Submit Proposal]
+    UC12[Accept/Reject Proposal]
+    
+    %% Use Cases - Contract Management
+    UC13[Generate Contract]
+    UC14[Sign Contract]
+    UC15[Monitor Collaborations]
+    
+    %% Use Cases - Community Features
+    UC16[Create Announcement]
+    UC17[Browse Announcements]
+    UC18[Create Event]
+    UC19[Register for Event]
+    
+    %% Use Cases - Admin Features
+    UC20[Manage Users]
+    UC21[Monitor Platform Activity]
+    UC22[Generate Reports]
+    
+    %% Relationships - User Management
+    ADMIN --- UC1
+    ENTREPRENEUR --- UC1
+    INVESTOR --- UC1
+    ORGANIZATION --- UC1
+    
+    ADMIN --- UC2
+    ENTREPRENEUR --- UC2
+    INVESTOR --- UC2
+    ORGANIZATION --- UC2
+    
+    ADMIN --- UC3
+    ENTREPRENEUR --- UC3
+    INVESTOR --- UC3
+    ORGANIZATION --- UC3
+    
+    ENTREPRENEUR --- UC4
+    
+    %% Relationships - Project Management
+    ENTREPRENEUR --- UC5
+    
+    ADMIN --- UC6
+    ENTREPRENEUR --- UC6
+    INVESTOR --- UC6
+    ORGANIZATION --- UC6
+    
+    ADMIN --- UC7
+    
+    ADMIN --- UC8
+    ENTREPRENEUR --- UC8
+    
+    %% Relationships - Help Request Management
+    ENTREPRENEUR --- UC9
+    
+    INVESTOR --- UC10
+    ORGANIZATION --- UC10
+    
+    INVESTOR --- UC11
+    
+    ENTREPRENEUR --- UC12
+    
+    %% Relationships - Contract Management
+    ADMIN --- UC13
+    
+    ENTREPRENEUR --- UC14
+    INVESTOR --- UC14
+    
+    ADMIN --- UC15
+    ENTREPRENEUR --- UC15
+    INVESTOR --- UC15
+    
+    %% Relationships - Community Features
+    ORGANIZATION --- UC16
+    
+    ENTREPRENEUR --- UC17
+    INVESTOR --- UC17
+    ORGANIZATION --- UC17
+    
+    ORGANIZATION --- UC18
+    
+    ENTREPRENEUR --- UC19
+    INVESTOR --- UC19
+    
+    %% Relationships - Admin Features
+    ADMIN --- UC20
+    ADMIN --- UC21
+    ADMIN --- UC22
+    
+    %% Styling
+    classDef actor fill:#ffcccc,stroke:#ff0000,stroke-width:2px,color:#333
+    classDef usecase fill:#e6f3ff,stroke:#0066cc,stroke-width:1px,color:#333
+    
+    class ADMIN,ENTREPRENEUR,INVESTOR,ORGANIZATION actor
+    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10,UC11,UC12,UC13,UC14,UC15,UC16,UC17,UC18,UC19,UC20,UC21,UC22 usecase

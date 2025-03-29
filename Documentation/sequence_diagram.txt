@@ -1,0 +1,67 @@
+sequenceDiagram
+    actor Entrepreneur
+    actor Admin
+    actor Investor
+    participant Frontend
+    participant AuthService
+    participant ProjectService
+    participant HelpRequestService
+    participant NotificationService
+    participant Database
+    
+    %% Project Creation Flow
+    Entrepreneur->>Frontend: Access Platform
+    Frontend->>AuthService: Login with credentials
+    AuthService->>Database: Validate credentials
+    Database-->>AuthService: Return user data
+    AuthService-->>Frontend: Authentication successful
+    
+    Entrepreneur->>Frontend: Create new project
+    Frontend->>ProjectService: Submit project data and documents
+    ProjectService->>Database: Store project information
+    Database-->>ProjectService: Project stored successfully
+    ProjectService->>NotificationService: Notify admin about new project
+    NotificationService-->>Admin: New project requires approval
+    
+    Admin->>Frontend: Review project details
+    Frontend->>ProjectService: Fetch project data
+    ProjectService->>Database: Get project details
+    Database-->>ProjectService: Return project information
+    ProjectService-->>Frontend: Display project for review
+    Admin->>Frontend: Approve project
+    Frontend->>ProjectService: Update project status
+    ProjectService->>Database: Change project status to "approved"
+    ProjectService->>NotificationService: Notify entrepreneur
+    NotificationService-->>Entrepreneur: Project approved
+    
+    %% Help Request Flow
+    Entrepreneur->>Frontend: Create help request for project
+    Frontend->>HelpRequestService: Submit help request details
+    HelpRequestService->>Database: Store help request
+    Database-->>HelpRequestService: Request stored successfully
+    HelpRequestService->>NotificationService: Notify potential investors
+    NotificationService-->>Investor: New help request available
+    
+    Investor->>Frontend: View help request details
+    Frontend->>HelpRequestService: Fetch help request information
+    HelpRequestService->>Database: Get help request data
+    Database-->>HelpRequestService: Return help request information
+    HelpRequestService-->>Frontend: Display help request details
+    
+    Investor->>Frontend: Submit proposal
+    Frontend->>HelpRequestService: Submit proposal details
+    HelpRequestService->>Database: Store proposal
+    Database-->>HelpRequestService: Proposal stored successfully
+    HelpRequestService->>NotificationService: Notify entrepreneur
+    NotificationService-->>Entrepreneur: New proposal received
+    
+    Entrepreneur->>Frontend: Accept proposal
+    Frontend->>HelpRequestService: Update proposal status
+    HelpRequestService->>Database: Change proposal status to "accepted"
+    Database-->>HelpRequestService: Status updated
+    HelpRequestService->>ProjectService: Generate contract
+    ProjectService->>Database: Store contract
+    Database-->>ProjectService: Contract stored
+    ProjectService->>NotificationService: Notify investor and entrepreneur
+    NotificationService-->>Entrepreneur: Contract ready for signature
+    NotificationService-->>Investor: Contract ready for signature

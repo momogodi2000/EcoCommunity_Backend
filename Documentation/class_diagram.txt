@@ -1,0 +1,213 @@
+classDiagram
+    %% User and Role Classes
+    class User {
+        +CharField username
+        +CharField email
+        +CharField password
+        +CharField phone
+        +CharField role
+        +DateTimeField created_at
+        +DateTimeField updated_at
+        +BooleanField is_blocked
+        +ImageField profile_image
+    }
+    
+    class Entrepreneur {
+        +OneToOneField user
+        +CharField first_name
+        +CharField last_name
+        +TextField bio
+    }
+    
+    class Investor {
+        +OneToOneField user
+        +CharField first_name
+        +CharField last_name
+        +TextField bio
+    }
+    
+    class Organization {
+        +OneToOneField user
+        +CharField organization_name
+        +CharField registration_number
+        +IntegerField founded_year
+        +TextField mission_statement
+        +URLField website_url
+        +TextField bio
+    }
+    
+    %% Project-related Classes
+    class Project {
+        +ForeignKey user
+        +ForeignKey entrepreneur
+        +CharField project_name
+        +CharField sector
+        +TextField description
+        +TextField specific_objectives
+        +CharField target_audience
+        +DecimalField estimated_budget
+        +CharField financing_plan
+        +CharField status
+        +TextField admin_comments
+        +DateTimeField created_at
+        +DateTimeField updated_at
+    }
+    
+    class ProjectDocument {
+        +ForeignKey project
+        +CharField document_type
+        +FileField file
+        +DateTimeField uploaded_at
+        +BooleanField is_required
+    }
+    
+    %% Help Request System
+    class HelpRequest {
+        +ForeignKey project
+        +ForeignKey entrepreneur
+        +CharField request_type
+        +CharField specific_need
+        +TextField description
+        +CharField status
+        +DateTimeField created_at
+        +DateTimeField updated_at
+    }
+    
+    class FinancialRequest {
+        +OneToOneField help_request
+        +DecimalField amount_requested
+        +DecimalField interest_rate
+        +IntegerField duration_months
+        +calculate_monthly_payment()
+        +calculate_total_repayment()
+        +calculate_total_interest()
+    }
+    
+    class TechnicalRequest {
+        +OneToOneField help_request
+        +CharField expertise_needed
+        +IntegerField estimated_duration
+    }
+    
+    %% Proposal Classes
+    class FinancialProposal {
+        +ForeignKey help_request
+        +ForeignKey investor
+        +CharField status
+        +DateTimeField created_at
+        +DateTimeField updated_at
+        +DecimalField investment_amount
+        +CharField investment_type
+        +CharField payment_schedule
+        +TextField expected_return
+        +TextField timeline
+        +TextField additional_terms
+    }
+    
+    class TechnicalProposal {
+        +ForeignKey help_request
+        +ForeignKey investor
+        +CharField status
+        +DateTimeField created_at
+        +DateTimeField updated_at
+        +TextField expertise
+        +CharField experience_level
+        +TextField availability
+        +CharField support_duration
+        +CharField support_type
+        +TextField proposed_approach
+        +TextField additional_resources
+        +TextField expected_outcomes
+    }
+    
+    %% Contract and Collaboration
+    class Contract {
+        +OneToOneField financial_proposal
+        +OneToOneField technical_proposal
+        +CharField contract_type
+        +FileField pdf_file
+        +TextField html_content
+        +DateTimeField created_at
+        +DateTimeField signature_entrepreneur
+        +DateTimeField signature_investor
+        +get_proposal()
+    }
+    
+    class Collaboration {
+        +ForeignKey entrepreneur
+        +ForeignKey investor
+        +ForeignKey project
+        +ForeignKey contract
+        +DateTimeField start_date
+        +DateTimeField end_date
+        +BooleanField is_active
+        +CharField collaboration_type
+    }
+    
+    %% Announcement and Event
+    class Announcement {
+        +ForeignKey organization
+        +CharField title
+        +CharField type
+        +TextField description
+        +CharField location
+        +DateField deadline
+        +DecimalField budget
+        +JSONField requirements
+        +CharField contact_email
+        +CharField contact_phone
+        +ImageField image
+        +CharField status
+        +DateTimeField created_at
+        +DateTimeField updated_at
+    }
+    
+    class Event {
+        +ForeignKey organization
+        +CharField title
+        +CharField status
+        +CharField type
+        +TextField description
+        +ImageField image
+        +DateField date
+        +TimeField time
+        +CharField location
+        +PositiveIntegerField capacity
+        +DateField registration_deadline
+        +DateTimeField created_at
+        +DateTimeField updated_at
+        +is_draft()
+    }
+    
+    %% Relationships
+    User <|-- Entrepreneur : extends
+    User <|-- Investor : extends
+    User <|-- Organization : extends
+    
+    User "1" -- "many" Project : creates
+    Entrepreneur "1" -- "many" Project : owns
+    Project "1" -- "many" ProjectDocument : has
+    
+    Project "1" -- "many" HelpRequest : has
+    Entrepreneur "1" -- "many" HelpRequest : creates
+    
+    HelpRequest <|-- FinancialRequest : extends
+    HelpRequest <|-- TechnicalRequest : extends
+    
+    HelpRequest "1" -- "many" FinancialProposal : receives
+    HelpRequest "1" -- "many" TechnicalProposal : receives
+    
+    Investor "1" -- "many" FinancialProposal : makes
+    Investor "1" -- "many" TechnicalProposal : makes
+    
+    FinancialProposal "1" -- "0..1" Contract : generates
+    TechnicalProposal "1" -- "0..1" Contract : generates
+    
+    Contract "1" -- "1" Collaboration : leads to
+    
+    Entrepreneur "1" -- "many" Collaboration : participates
+    Investor "1" -- "many" Collaboration : participates
+    Project "1" -- "many" Collaboration : involves
+    
+    Organization "1" -- "many" Announcement : publishes
+    Organization "1" -- "many" Event : organizes

@@ -1,0 +1,64 @@
+graph TB
+    %% Environment nodes
+    subgraph "Production Environment"
+        subgraph "Web Server"
+            NGINX["NGINX Web Server"]
+        end
+        
+        subgraph "Application Server"
+            DJANGO["Django Application Server"]
+            GUNICORN["Gunicorn WSGI Server"]
+        end
+        
+        subgraph "Database Server"
+            POSTGRES["PostgreSQL Database"]
+        end
+        
+        subgraph "File Storage"
+            S3["Storage System<br>(Document Storage)"]
+        end
+        
+        subgraph "Client Side"
+            REACT["React Frontend<br>(Tailwind CSS)"]
+            MOBILE["Mobile App<br>(React Native)"]
+        end
+    end
+    
+    %% Development Environment
+    subgraph "Development Environment"
+        DEVENV["Local Development Environment"]
+        VSCODE["VS Code / IDE"]
+        GIT["Git Repository"]
+    end
+    
+    %% Relationships
+    CLIENT1["End User<br>(Entrepreneur)"] --> REACT
+    CLIENT2["End User<br>(Investor)"] --> REACT
+    CLIENT3["End User<br>(Organization)"] --> REACT
+    CLIENT4["End User<br>(Mobile)"] --> MOBILE
+    
+    REACT --> NGINX
+    MOBILE --> NGINX
+    NGINX --> GUNICORN
+    GUNICORN --> DJANGO
+    DJANGO --> POSTGRES
+    DJANGO --> S3
+    
+    DEVENV --> GIT
+    GIT -.-> DJANGO
+    GIT -.-> REACT
+    
+    VSCODE --> DEVENV
+
+    %% Styling
+    classDef server fill:#326ce5,stroke:#fff,stroke-width:1px,color:#fff
+    classDef storage fill:#ff9900,stroke:#fff,stroke-width:1px,color:#fff
+    classDef frontend fill:#00a14b,stroke:#fff,stroke-width:1px,color:#fff
+    classDef client fill:#7a0177,stroke:#fff,stroke-width:1px,color:#fff
+    classDef dev fill:#6b6b6b,stroke:#fff,stroke-width:1px,color:#fff
+    
+    class NGINX,DJANGO,GUNICORN server
+    class POSTGRES,S3 storage
+    class REACT,MOBILE frontend
+    class CLIENT1,CLIENT2,CLIENT3,CLIENT4 client
+    class DEVENV,VSCODE,GIT dev
